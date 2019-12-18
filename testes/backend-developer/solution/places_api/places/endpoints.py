@@ -8,8 +8,8 @@ from .models import db, Place
 app = Blueprint('places', __name__)
 
 
-@jwt_required()
 @app.route('/api/v1.0/places', methods=['GET'])
+@jwt_required()
 def list_places():
     try:
 
@@ -25,8 +25,8 @@ def list_places():
         abort(500)
 
 
-@jwt_required()
 @app.route('/api/v1.0/places/new', methods=['POST'])
+@jwt_required()
 def create_place():
 
     if not request.json:
@@ -38,7 +38,7 @@ def create_place():
         if not r in request.json:
             return make_response(
                 jsonify(
-                    {'error_message': 'Required fields not met, they should be: \'name\', \'slug\', \'city\' and \'state\''}
+                    error_message='Required fields not met, they should be: \'name\', \'slug\', \'city\' and \'state\''
                 ), 400
             )
 
@@ -61,13 +61,10 @@ def create_place():
         db.session.rollback()
         return make_response(
             jsonify(
-                {'error_message': 'A Place with this \'name\' or \'slug\' already exists'}
+                error_message='A Place with this \'name\' or \'slug\' already exists'
             ), 409
         )
     except Exception as ex:
         db.session.rollback()
-        return make_response(
-            jsonify(
-                {'error_message': 'Internal Server Error'}
-            ), 500
-        )
+        abort(500)
+
