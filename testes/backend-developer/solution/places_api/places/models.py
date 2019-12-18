@@ -38,3 +38,13 @@ class User(db.Model):
 
     def __repr__(self):
         return ('{0} {1}'.format(self.first_name, self.last_name))
+
+
+class Place(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(128), nullable=False)
+    slug = db.Column(db.String(128), nullable=False)
+    city = db.Column(db.String(128), nullable=False)
+    state = db.Column(db.String(128), nullable=False)
+    created_at = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.now)
+    updated_at = db.Column(db.DateTime())
