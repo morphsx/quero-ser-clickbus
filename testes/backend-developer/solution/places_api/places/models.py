@@ -48,3 +48,14 @@ class Place(db.Model):
     state = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.now)
     updated_at = db.Column(db.DateTime())
+
+    @property
+    def serialize(self):
+        return {
+            'name':  self.name,
+            'slug': self.slug,
+            'city': self.city,
+            'state': self.state,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
