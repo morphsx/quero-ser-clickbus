@@ -36,7 +36,11 @@ def create_place():
 
     for r in rules:
         if not r in request.json:
-            abort(400)
+            return make_response(
+                jsonify(
+                    {'error_message': 'Required fields not met, they should be: \'name\', \'slug\', \'city\' and \'state\''}
+                ), 400
+            )
 
     new_place = Place(
         name=request.json['name'],
@@ -55,7 +59,15 @@ def create_place():
         )
     except exc.IntegrityError:
         db.session.rollback()
-        abort(409)
+        return make_response(
+            jsonify(
+                {'error_message': 'A Place with this \'name\' or \'slug\' already exists'}
+            ), 409
+        )
     except Exception as ex:
         db.session.rollback()
-        abort(500)
+        return make_response(
+            jsonify(
+                {'error_message': 'Internal Server Error'}
+            ), 500
+        )
