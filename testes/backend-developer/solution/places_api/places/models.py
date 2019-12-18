@@ -42,8 +42,8 @@ class User(db.Model):
 
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(128), nullable=False)
-    slug = db.Column(db.String(128), nullable=False)
+    name = db.Column(db.String(128), unique=True, nullable=False)
+    slug = db.Column(db.String(128), unique=True, nullable=False)
     city = db.Column(db.String(128), nullable=False)
     state = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.now)
@@ -52,10 +52,11 @@ class Place(db.Model):
     @property
     def serialize(self):
         return {
+            'id': self.id,
             'name':  self.name,
             'slug': self.slug,
             'city': self.city,
             'state': self.state,
             'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'updated_at': self.updated_at if self.updated_at else ''
         }
