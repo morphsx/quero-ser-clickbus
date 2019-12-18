@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, make_response, jsonify
 from flask_bcrypt import Bcrypt
 from flask_jwt import JWT
 from flask_cors import CORS
@@ -45,5 +45,13 @@ def create_app():
     CORS(application, resources={r'/': {'origins': '*'}})
 
     application.register_blueprint(app)
+    application.register_error_handler(Exception, default_error_handler)
 
     return application
+
+def default_error_handler(e):
+    return make_response(
+        jsonify(
+            error_message='{0} {1}'.format(e.code, e.name)
+        ), e.code
+    )
