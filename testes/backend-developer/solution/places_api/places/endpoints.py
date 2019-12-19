@@ -20,7 +20,7 @@ def list_places():
         return make_response(
             jsonify(
                 places=[p.serialize for p in places]
-            ), 201
+            ), 200
         )
 
     except Exception as ex:
