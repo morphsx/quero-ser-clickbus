@@ -159,3 +159,25 @@ def edit_place():
         db.session.rollback()
         abort(500)
 
+
+@app.route('/api/v1.0/places/<string:slug>', methods=['GET'])
+@jwt_required()
+def fetch_place(slug):
+    
+    try:
+        place = Place.query.filter(Place.slug == slug).first()
+
+        if place:
+            return make_response(
+                jsonify(
+                    place=place.serialize
+                ), 200
+            )
+        else:
+            return make_response(
+                jsonify(
+                    error_message='Place not found'
+                ), 404
+            )
+    except Exception as ex:
+        abort(500)
