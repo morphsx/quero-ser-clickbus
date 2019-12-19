@@ -57,6 +57,11 @@ class Place(db.Model):
     def slug(self, entry):
         reserved_keywords = ['new', 'edit', 'search']
 
+        if ' ' in entry:
+            e = Exception('slug field should NOT contain spaces')
+            e.code = 400
+            raise e
+
         if entry in reserved_keywords:
             e = Exception('slug field contains a reserved keyword, which is not allowed. Should NOT be any of: {0}'.format(', '.join(reserved_keywords)))
             e.code = 400
