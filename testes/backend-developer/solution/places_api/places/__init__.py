@@ -52,10 +52,8 @@ def create_app():
 def default_error_handler(e):
 
     if hasattr(e, 'code'):
-        # message = e.name
         code = e.code
     else:
-        # message = e
         code = 500
 
     return make_response(
