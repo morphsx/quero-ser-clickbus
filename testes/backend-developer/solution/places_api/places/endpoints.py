@@ -181,3 +181,16 @@ def fetch_place(slug):
             )
     except Exception as ex:
         abort(500)
+
+
+@app.route('/api/v1.0/places/search/<string:name>', methods=['GET'])
+@jwt_required()
+def search_place(name):
+
+    name = '%{}%'.format(name)
+
+    return make_response(
+        jsonify(
+            [p.serialize for p in Place.query.filter(Place.name.ilike(name)).all()]
+        )
+    )
