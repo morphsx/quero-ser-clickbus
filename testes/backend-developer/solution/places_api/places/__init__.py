@@ -58,6 +58,6 @@ def default_error_handler(e):
 
     return make_response(
         jsonify(
-            error_message='{0} {1}'.format(code, e)
+            error_message='{0}'.format(e)
         ), code
     )
