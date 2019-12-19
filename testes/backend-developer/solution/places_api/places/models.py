@@ -30,8 +30,8 @@ class User(db.Model):
         return self._password
 
     @password.setter
-    def password(self, entrada):
-        self._password = bcrypt.generate_password_hash(entrada).decode('utf-8')
+    def password(self, entry):
+        self._password = bcrypt.generate_password_hash(entry).decode('utf-8')
 
     def check_credentials(self, password):
         return bcrypt.check_password_hash(self.password, password)
@@ -43,17 +43,32 @@ class User(db.Model):
 class Place(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), unique=True, nullable=False)
-    slug = db.Column(db.String(128), unique=True, nullable=False)
+    _slug = db.Column(db.String(128), unique=True, nullable=False)
     city = db.Column(db.String(128), nullable=False)
     state = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.now)
     updated_at = db.Column(db.DateTime())
 
+    @hybrid_property
+    def slug(self):
+        return self._slug
+
+    @slug.setter
+    def slug(self, entry):
+        reserved_keywords = ['new', 'edit', 'search']
+
+        if entry in reserved_keywords:
+            e = Exception('slug field contains a reserved keyword, which is not allowed. Should NOT be any of: {0}'.format(', '.join(reserved_keywords)))
+            e.code = 400
+            raise e
+
+        self._slug = entry
+
     @property
     def serialize(self):
         return {
             'id': self.id,
-            'name':  self.name,
+            'name': self.name,
             'slug': self.slug,
             'city': self.city,
             'state': self.state,
