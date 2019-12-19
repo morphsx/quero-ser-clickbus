@@ -103,19 +103,22 @@ def edit_place():
     if len(request.json['fields']) <= 0:
         return make_response(
             jsonify(
-                error_message='No field specified for change'
+                error_message='No field specified for change. Should be one or more of: {0}'.format(', '.join(allowed_fields))
             ), 400
         )
 
-    for f in request.json['fields']:
-        # Checking if 'fields' attribute has any unknown or incorrect field name
-        if f not in allowed_fields:
-            return make_response(
-                jsonify(
-                    error_message='Invalid field attribute: \'{0}\'. Should be one of: {1}'.format(f, ', '.join(allowed_fields))
-                ), 400
-            )
+    # Checking if 'fields' attribute has any unknown or incorrect field name
+    fields = request.json['fields']
+    diff = list(set(fields) - set(allowed_fields))
+    
+    if len(diff) > 0:
+        return make_response(
+            jsonify(
+                error_message='Invalid field attribute: \'{0}\'. Should be one of: {1}'.format(', '.join(diff), ', '.join(allowed_fields))
+            ), 400
+        )
 
+    for f in fields:
         # Checking if given field contains 'current_value' and 'new_value' attributes
         if not 'current_value' in request.json['fields'][f] or not 'new_value' in request.json['fields'][f]:
             return make_response(
@@ -125,7 +128,6 @@ def edit_place():
             )
 
         current_value = request.json['fields'][f]['current_value']
-        new_value = request.json['fields'][f]['new_value']
 
         # Checking if 'current_value' of given field name corresponds to current_value of the model
         if not place.serialize[f] == current_value:
@@ -135,7 +137,9 @@ def edit_place():
                 ), 400
             )
 
-        # Setting new_value to given field name in requested model instance
+    # Setting new_value to given field name in requested model instance
+    for f in fields:
+        new_value = request.json['fields'][f]['new_value']
         setattr(place, f, new_value)
 
     place.updated_at = datetime.datetime.now()
