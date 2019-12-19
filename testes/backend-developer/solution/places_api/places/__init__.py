@@ -52,14 +52,14 @@ def create_app():
 def default_error_handler(e):
 
     if hasattr(e, 'code'):
-        message = e.name
+        # message = e.name
         code = e.code
     else:
-        message = e
+        # message = e
         code = 500
 
     return make_response(
         jsonify(
-            error_message='{0} {1}'.format(code, message)
+            error_message='{0} {1}'.format(code, e)
         ), code
     )
