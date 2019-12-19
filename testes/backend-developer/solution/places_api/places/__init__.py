@@ -8,7 +8,7 @@ from .models import db, bcrypt, User
 from .endpoints import app
 
 def authenticate(username, password):
-    # Check if test_user exists only for the sake of this test,
+    # Check if test_user exists only for the sake of this exam,
     # just so that we have something to get an access token from.
     if username == 'test' and password == 'test':
         user = User(
@@ -50,8 +50,16 @@ def create_app():
     return application
 
 def default_error_handler(e):
+
+    if hasattr(e, 'code'):
+        message = e.name
+        code = e.code
+    else:
+        message = e
+        code = 500
+
     return make_response(
         jsonify(
-            error_message='{0} {1}'.format(e.code, e.name)
-        ), e.code
+            error_message='{0} {1}'.format(code, message)
+        ), code
     )
