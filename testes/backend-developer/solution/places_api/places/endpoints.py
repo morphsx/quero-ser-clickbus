@@ -195,6 +195,6 @@ def search_place(name):
 
     return make_response(
         jsonify(
-            [p.serialize for p in Place.query.filter(Place.name.ilike(name)).all()]
-        )
+            places=[p.serialize for p in Place.query.filter(Place.name.ilike(name)).all()]
+        ), 200
     )
