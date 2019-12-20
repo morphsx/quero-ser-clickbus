@@ -18,7 +18,7 @@ def app():
     app.config['TESTING'] = True
     app.config['SECRET_KEY'] = 'secret_key'
     app.config['JWT_SECRET_KEY'] = 'secret_key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/giovani/clickbus_test_db.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('CLICKBUS_TEST_DB_URI', None)
     app.config['SQLALCHEMY_ECHO'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['BCRYPT_LOG_ROUNDS'] = 12
