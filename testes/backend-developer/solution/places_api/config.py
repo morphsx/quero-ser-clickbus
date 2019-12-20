@@ -11,6 +11,7 @@ SQLALCHEMY_ECHO = False
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 JWT_EXPIRATION_DELTA = timedelta(minutes=30)
 BCRYPT_LOG_ROUNDS = 12
-DEBUG = True
-ENV = 'development'
+DEBUG = False
+ENV = 'production'
+TESTING = False
 JSON_AS_ASCII = False
