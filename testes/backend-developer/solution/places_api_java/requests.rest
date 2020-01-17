@@ -1,0 +1,63 @@
+### Registers new User
+POST http://localhost:8080/auth/register
+content-type: application/json
+
+{
+    "username": "asdf",
+    "password": "pwd"
+}
+
+### Gets Auth Token
+POST http://localhost:8080/auth
+content-type: application/json
+
+{
+    "username": "test4",
+    "password": "pwd"
+}
+
+### List all Places
+GET http://localhost:8080/api/v1.0/places
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjM4NDcyLCJpYXQiOjE1NzkyMzgxNzJ9.GJLOg-l3cFveESJsnpJo2R6NJTFlIQcZARN_BofbIZiZwrVKj4yI7wN4kNvRmJ4fFX3BPerk6rsLaCn9vy-RAw
+
+### Search by Name
+GET http://localhost:8080/api/v1.0/places/search/home
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjUzNDA5LCJpYXQiOjE1NzkyMzU0MDl9.BkdntSHBsXImYaZMc7g8PgyznanvQeBZPmKQ2W1KqWUb5wtxlww5-aqBqrKBNn23L1Z3Wl3updqDbUxCXJ3URA
+
+### Find by Slug
+GET http://localhost:8080/api/v1.0/places/home
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjUzNDA5LCJpYXQiOjE1NzkyMzU0MDl9.BkdntSHBsXImYaZMc7g8PgyznanvQeBZPmKQ2W1KqWUb5wtxlww5-aqBqrKBNn23L1Z3Wl3updqDbUxCXJ3URA
+
+### Register new Place
+POST http://localhost:8080/api/v1.0/places/new
+content-type: application/json
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjUzNDA5LCJpYXQiOjE1NzkyMzU0MDl9.BkdntSHBsXImYaZMc7g8PgyznanvQeBZPmKQ2W1KqWUb5wtxlww5-aqBqrKBNn23L1Z3Wl3updqDbUxCXJ3URA
+
+{
+    "name": "Home",
+    "slug": "home",
+    "city": "Ribeirão Preto",
+    "state": "São Paulo"
+}
+
+### Edit a Place
+PUT http://localhost:8080/api/v1.0/places/edit/1
+content-type: application/json
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjUzNDA5LCJpYXQiOjE1NzkyMzU0MDl9.BkdntSHBsXImYaZMc7g8PgyznanvQeBZPmKQ2W1KqWUb5wtxlww5-aqBqrKBNn23L1Z3Wl3updqDbUxCXJ3URA
+
+{
+    "fields": [
+        {
+            "name": "slug",
+            "data": {
+                "current_value": "zxcfzxfxcf",
+                "new_value": "ayzdfdf"
+            }
+        }
+    ]
+}
+
+### Unsupported method
+GET http://localhost:8080/
+content-type: application/json
+Authorization: JWT eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTc5MjUzNDA5LCJpYXQiOjE1NzkyMzU0MDl9.BkdntSHBsXImYaZMc7g8PgyznanvQeBZPmKQ2W1KqWUb5wtxlww5-aqBqrKBNn23L1Z3Wl3updqDbUxCXJ3URA
