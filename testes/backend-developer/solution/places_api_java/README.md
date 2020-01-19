@@ -5,11 +5,17 @@ I named some variables with snake_casing instead of camel case just so it has th
 
 ## Requirements
 - Java 8+
-- Environment variables: **SPRING_DATASOURCE_URL**,  **SPRING_DATASOURCE_USERNAME**, **SPRING_DATASOURCE_PASSWORD**
--                        **SPRING_DATASOURCE_TEST_URL**, **SPRING_DATASOURCE_TEST_USERNAME**, **SPRING_DATASOURCE_TEST_PASSWORD**
+- Environment variables: 
+- **SPRING_DATASOURCE_URL**
+- **SPRING_DATASOURCE_USERNAME**
+- **SPRING_DATASOURCE_PASSWORD**
+- **SPRING_DATASOURCE_TEST_URL**
+- **SPRING_DATASOURCE_TEST_USERNAME**
+- **SPRING_DATASOURCE_TEST_PASSWORD**
 
 ## Changes from [places_api](https://github.com/morphsx/quero-ser-clickbus/tree/master/testes/backend-developer/solution/places_api)
 - There is a new endpoint Register `/auth/register` to create Users to use with `/auth` endpoint and get JWT token.
+- Different env vars.
 
 ## Building
 - `./mvnw package`
@@ -42,6 +48,7 @@ export SPRING_DATASOURCE_TEST_PASSWORD=db_pwd
 }
 ```
 **Returns:** json
+
 **Return Format:**
 ```json
 {
