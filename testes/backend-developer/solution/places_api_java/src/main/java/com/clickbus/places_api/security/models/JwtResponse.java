@@ -7,11 +7,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class JwtResponse implements Serializable{
+public class JwtResponse implements Serializable {
     /**
     *
     */
     private static final long serialVersionUID = -6390299452855197160L;
 
-    private final String jwttoken;
+    private final String access_token;
 }
