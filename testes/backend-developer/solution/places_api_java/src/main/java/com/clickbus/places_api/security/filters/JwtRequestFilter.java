@@ -20,7 +20,6 @@ import com.clickbus.places_api.security.JwtTokenUtil;
 import com.clickbus.places_api.security.services.JwtUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
