@@ -13,6 +13,7 @@ import com.clickbus.places_api.models.PlacesDto;
 import com.clickbus.places_api.objects.EditPlaceField;
 import com.clickbus.places_api.objects.EditPlaceObject;
 import com.clickbus.places_api.repository.PlaceRepository;
+import com.clickbus.places_api.services.PlaceService;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PlaceController {
 
     private PlaceRepository repository;
+    private PlaceService placeService;
 
-    public PlaceController(PlaceRepository placeRepository) {
+    public PlaceController(PlaceRepository placeRepository, PlaceService placeService) {
         this.repository = placeRepository;
+        this.placeService = placeService;
     }
 
     @GetMapping
@@ -57,7 +60,7 @@ public class PlaceController {
     @ResponseStatus(HttpStatus.CREATED)
     public PlaceDto createPlace(@Valid @RequestBody Place place) {
         try {
-            return new PlaceDto(repository.save(place));
+            return new PlaceDto(placeService.save(place));
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("A Place with this 'slug' already exists");
         }
@@ -139,7 +142,7 @@ public class PlaceController {
         }
 
         try {
-            repository.save(place);
+            placeService.save(place);
         } catch (DataIntegrityViolationException ex) {
             throw new DataIntegrityViolationException("A Place with this slug already exists");
         }
