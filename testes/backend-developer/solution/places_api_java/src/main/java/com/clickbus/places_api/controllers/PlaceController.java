@@ -31,7 +31,7 @@ public class PlaceController {
 
     private PlaceRepository repository;
 
-    PlaceController(PlaceRepository placeRepository) {
+    public PlaceController(PlaceRepository placeRepository) {
         this.repository = placeRepository;
     }
 
@@ -56,10 +56,6 @@ public class PlaceController {
     @PostMapping(path = {"/new"})
     @ResponseStatus(HttpStatus.CREATED)
     public PlaceDto createPlace(@Valid @RequestBody Place place) {
-
-        if (place.getSlug().contains(" "))
-            throw new DataIntegrityViolationException("Field 'slug' should not contain spaces");
-
         try {
             return new PlaceDto(repository.save(place));
         } catch (DataIntegrityViolationException ex) {
@@ -80,6 +76,7 @@ public class PlaceController {
         if (object.getFields().size() <= 0)
             throw new InvalidEditObjectException("No 'field' specified for change. Should be one or more of: " + String.join(", ", allowed_fields));
 
+        // Performing validations
         for (EditPlaceField f : object.getFields()) {
 
             // Checking if 'fields' contain field_name and data attribute
@@ -97,34 +94,48 @@ public class PlaceController {
             // Checking if current_value of field correspond to model instance
             String fieldWithError = "";
             String current_value = f.getData().getCurrent_value();
-            String new_value = f.getData().getNew_value();
 
             switch (f.getName()) {
                 case "name":
                     if (!place.getName().equals(current_value))
                         fieldWithError = "'name'";
-                    place.setName(new_value);
                     break;
                 case "slug":
                     if (!place.getSlug().equals(current_value))
                         fieldWithError = "'slug'";
-                    place.setSlug(new_value);
                     break;
                 case "city":
                     if (!place.getCity().equals(current_value))
                         fieldWithError = "'city'";
-                    place.setCity(f.getData().getCurrent_value());
-                    place.setCity(new_value);
                     break;
                 case "state":
                     if (!place.getState().equals(current_value))
                         fieldWithError = "'state'";
-                    place.setState(new_value);
                     break;
             }
 
             if (fieldWithError.length() > 0)
                 throw new InvalidEditObjectException("'current_value' for field " + fieldWithError + " is incorrect");
+        }
+
+        // Changing instance values only if no error was raised
+        for (EditPlaceField f : object.getFields()) {
+            String new_value = f.getData().getNew_value();
+
+            switch (f.getName()) {
+                case "name":
+                    place.setName(new_value);
+                    break;
+                case "slug":
+                    place.setSlug(new_value);
+                    break;
+                case "city":
+                    place.setCity(new_value);
+                    break;
+                case "state":
+                    place.setState(new_value);
+                    break;
+            }
         }
 
         try {
